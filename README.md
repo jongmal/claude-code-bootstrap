@@ -1,35 +1,38 @@
-# claude-code-bootstrap
+# 🚀 claude-code-bootstrap
 
-Claude Code skills & agents for bootstrapping dev environments from scratch.
+> Claude Code로 개발 환경을 처음부터 뚝딱 세팅하는 스킬 & 에이전트 모음
 
-Drop these into `~/.claude/skills/` (global) or `.claude/skills/` (project) and start using them.
+`~/.claude/skills/` (글로벌) 또는 `.claude/skills/` (프로젝트)에 복사하면 바로 사용 가능합니다.
 
-## Skills
+## 📦 Skills
 
-### `/team-setup` — Team Agent Orchestration
+### [`/team-setup`](skills/team-setup/) — 팀 에이전트 오케스트레이션
 
-Set up PM(Lead) + teammates (BE/FE/QA) structure with a single command.
+PM(Lead) + 팀메이트(BE/FE/QA) 구조를 한 방에 셋업합니다.
 
-- Detects your environment (WSL / macOS / Windows)
-- Installs missing dependencies or falls back gracefully
-- Creates tmux layout or uses in-process mode
-- Spawns teammates via `TeamCreate` + `Agent`
-- Wires up `SendMessage` / `TaskList` communication
+- 🔍 환경 자동 감지 (WSL / macOS / Windows)
+- 📦 누락 의존성 자동 해결 or 폴백
+- 🖥️ tmux 레이아웃 자동 구성
+- 🤖 `TeamCreate` + `Agent` spawn
+- 💬 `SendMessage` / `TaskList` 통신 연결
 
-| Environment | Mode |
-|-------------|------|
-| WSL + tmux | tmux panes (recommended) |
-| macOS + tmux | tmux panes |
-| Windows native | in-process (Shift+Down) |
-| No tmux | in-process fallback |
+| 환경 | 모드 |
+|------|------|
+| 🐧 WSL + tmux | tmux pane (권장) |
+| 🍎 macOS + tmux | tmux pane |
+| 🪟 Windows native | in-process (Shift+Down) |
+| 🚫 tmux 없음 | in-process 폴백 |
 
-## Quick Start
+## ⚡ Quick Start
 
 ```bash
-# Copy to global skills
-cp -r skills/team-setup ~/.claude/skills/
+# 스킬 복사
+git clone https://github.com/jongmal/claude-code-bootstrap.git
+cp -r claude-code-bootstrap/skills/team-setup ~/.claude/skills/
+```
 
-# Enable Agent Teams in ~/.claude/settings.json
+Agent Teams 활성화 (`~/.claude/settings.json`):
+```json
 {
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
@@ -37,27 +40,19 @@ cp -r skills/team-setup ~/.claude/skills/
 }
 ```
 
-Then in Claude Code:
-
+Claude Code에서:
 ```
 /team-setup
 ```
 
-## Requirements
+끝! 🎉
+
+## 📋 Requirements
 
 - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) CLI
 - `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` in settings
 - tmux (optional, recommended)
 
-## Installation
-
-```bash
-git clone https://github.com/jongmal/claude-code-bootstrap.git
-cp -r claude-code-bootstrap/skills/team-setup ~/.claude/skills/
-```
-
-Or cherry-pick individual skill folders into your project's `.claude/skills/`.
-
-## License
+## 📄 License
 
 MIT
