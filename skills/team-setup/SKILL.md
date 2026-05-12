@@ -268,6 +268,20 @@ SendMessage(to: "*", message: {type: "shutdown_request"})
 TeamDelete(team_name: "<팀이름>")
 ```
 
+### tmux 좀비 pane 정리 (종료 후 필수)
+TeamDelete는 팀 디렉토리만 삭제하고 **tmux pane은 건드리지 않는다.**
+에이전트가 종료되면 해당 pane이 zsh로 남아서 좀비 pane이 쌓인다.
+
+종료 후 반드시 정리:
+```bash
+# 코어 pane(1~3 등)을 제외하고 zsh 좀비만 kill
+for p in $(tmux list-panes -t <세션> -F '#{pane_index}:#{pane_current_command}' | grep ':zsh$' | cut -d: -f1 | sort -rn); do
+  [ "$p" -le 3 ] && continue
+  tmux kill-pane -t "<세션>:1.$p" 2>/dev/null
+done
+```
+코어 pane 번호(1~3)는 환경에 맞게 조정.
+
 ---
 
 ## 세션 재시작 시 (resume)
@@ -317,6 +331,11 @@ TeamDelete(team_name: "<팀이름>")
 ```
 → `tmux new-session -s claude` 로 세션 생성 후 재시작
 → 또는 in-process 모드로 전환
+
+### tmux 좀비 pane이 계속 쌓임
+- **원인**: `TeamDelete`는 팀 디렉토리만 삭제하고 tmux pane은 건드리지 않음. 에이전트 종료 후 pane이 zsh로 남음.
+- **해결**: TeamDelete 후 좀비 pane 정리 스크립트 실행 (위 "종료" 섹션 참조)
+- **예방**: 스킬/오케스트레이션 흐름의 마지막 단계에 pane 정리 포함
 
 ### Windows에서 tmux 관련 에러
 → Windows native에서는 tmux 불가. in-process 모드 자동 선택됨.
